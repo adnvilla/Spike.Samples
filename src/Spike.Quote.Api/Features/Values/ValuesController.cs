@@ -1,41 +1,52 @@
-﻿using System.Collections.Generic;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Spike.Quote.Api.Features.Values
 {
     [Route("values")]
     public class ValuesController : Controller
     {
-        // GET api/values
+        private readonly IMediator _mediator;
+
+        public ValuesController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
+        // GET values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<ValuesEnvelope> Get()
         {
-            return new string[] { "value1", "value2" };
+            return await _mediator.Send(new List.Query());
         }
 
-        // GET api/values/5
+        // GET values/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ValueEnvelope> Get(int id)
         {
-            return "value";
+            return await _mediator.Send(new Details.Query(id));
         }
 
-        // POST api/values
+        // POST values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public async Task<ValueEnvelope> Post([FromBody]Create.Command command)
         {
+            return await _mediator.Send(command);
         }
 
-        // PUT api/values/5
+        // PUT values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public async Task<ValueEnvelope> Edit(int id, [FromBody]Edit.Command command)
         {
+            return await _mediator.Send(command);
         }
 
-        // DELETE api/values/5
+        // DELETE values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
+            await _mediator.Send(new Delete.Command(id));
         }
     }
 }
