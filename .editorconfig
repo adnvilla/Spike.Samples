@@ -7,7 +7,6 @@ root = true
 ; Choose between lf or rf on "end_of_line" property
 [*]
 indent_style = space
-charset = utf-8
 trim_trailing_whitespace = true
 indent_size = 4
 

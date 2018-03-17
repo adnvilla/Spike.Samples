@@ -1,16 +1,19 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Spike.Quote.Api.Features.Values
 {
     [Route("values")]
     public class ValuesController : Controller
     {
+        private readonly ILogger<ValuesController> _logger;
         private readonly IMediator _mediator;
 
-        public ValuesController(IMediator mediator)
+        public ValuesController(ILogger<ValuesController> logger, IMediator mediator)
         {
+            _logger = logger;
             _mediator = mediator;
         }
 
@@ -18,6 +21,7 @@ namespace Spike.Quote.Api.Features.Values
         [HttpGet]
         public async Task<ValuesEnvelope> Get()
         {
+            _logger.LogError("This is test!");
             return await _mediator.Send(new List.Query());
         }
 
